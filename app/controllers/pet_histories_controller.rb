@@ -1,10 +1,12 @@
 class PetHistoriesController < ApplicationController
   before_action :set_pet_history, only: [:show, :edit, :update, :destroy]
+  before_action :set_pet
 
   # GET /pet_histories
   # GET /pet_histories.json
   def index
     @pet_histories = PetHistory.all
+    # @pet = Pet.find(params[:pet_id])
   end
 
   # GET /pet_histories/1
@@ -15,6 +17,7 @@ class PetHistoriesController < ApplicationController
   # GET /pet_histories/new
   def new
     @pet_history = PetHistory.new
+    # @pet = Pet.find(params[:pet_id])
   end
 
   # GET /pet_histories/1/edit
@@ -25,10 +28,12 @@ class PetHistoriesController < ApplicationController
   # POST /pet_histories.json
   def create
     @pet_history = PetHistory.new(pet_history_params)
+    # @pet = Pet.find(params[:pet_id])
+    @pet_history.pet = @pet
 
     respond_to do |format|
       if @pet_history.save
-        format.html { redirect_to @pet_history, notice: 'Pet history was successfully created.' }
+        format.html { redirect_to pet_pet_history_path(@pet, @pet_history), notice: 'Pet history was successfully created.' }
         format.json { render :show, status: :created, location: @pet_history }
       else
         format.html { render :new }
@@ -42,7 +47,7 @@ class PetHistoriesController < ApplicationController
   def update
     respond_to do |format|
       if @pet_history.update(pet_history_params)
-        format.html { redirect_to @pet_history, notice: 'Pet history was successfully updated.' }
+        format.html { redirect_to pet_pet_history_path(@pet, @pet_history), notice: 'Pet history was successfully updated.' }
         format.json { render :show, status: :ok, location: @pet_history }
       else
         format.html { render :edit }
@@ -56,7 +61,7 @@ class PetHistoriesController < ApplicationController
   def destroy
     @pet_history.destroy
     respond_to do |format|
-      format.html { redirect_to pet_histories_url, notice: 'Pet history was successfully destroyed.' }
+      format.html { redirect_to pet_pet_histories_url(@pet), notice: 'Pet history was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -65,6 +70,10 @@ class PetHistoriesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_pet_history
       @pet_history = PetHistory.find(params[:id])
+    end
+
+    def set_pet
+      @pet = Pet.find(params[:pet_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
