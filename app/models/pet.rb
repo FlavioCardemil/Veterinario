@@ -3,19 +3,19 @@ class Pet < ApplicationRecord
   has_many :pet_histories
 
   def history_count
-    #TODO-implement
+    self.pet_histories.count
   end
 
   def avg_weight
-    #TODO-implement
+    self.pet_histories.average(:weight).to_f.round
   end
 
   def avg_height
-    #TODO-implement
+    self.pet_histories.average(:heigth).to_f.round
   end
 
   def max_weight
-    #TODO-implement
+    # self.pet_histories.max(:weight)
   end
 
   def max_height
